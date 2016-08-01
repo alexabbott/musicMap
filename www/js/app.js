@@ -68,40 +68,38 @@ angular.module('starter', ['ionic', 'ngCordova'])
 
       $scope.djs = [
         {
-          experience: 104,
+          experience: 45,
           name: 'djank yucca',
           lat: 40.750704,
           lng: -73.993752,
           playing: true,
-          radius: 483,
           song: '<iframe width="100%" height="450" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/258838532&amp;auto_play=true&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>'
         },
         {
-          experience: 100,
+          experience: 10,
           name: 'albeit',
-          lat: 40.740088,
-          lng: -73.997755,
+          lat: 40.748028,
+          lng: -73.995755,
           playing: true,
-          radius: 983,
           song: '<iframe width="100%" height="450" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/241628741&amp;auto_play=true&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>'
         }
       ];
 
       // dj markers
+      $scope.topDJ = 0;
       for (var n = 0; n < $scope.djs.length; n++) {
+        $scope.djs[n].radius = 10 * $scope.djs[n].experience;
+        $scope.djs[n].latLng = new google.maps.LatLng($scope.djs[n].lat, $scope.djs[n].lng);
+
         if ($scope.djs[n].playing === true) {
-          if (!$scope.topDJ) {
+          if ($scope.djs[n].experience >= $scope.topDJ && google.maps.geometry.spherical.computeDistanceBetween($scope.user.latLng, $scope.djs[n].latLng) < $scope.djs[n].radius) {
             $scope.topDJ = $scope.djs[n].experience;
-          } else {
-            if ($scope.djs[n].experience >= $scope.topDJ) {
-              $scope.topDJ = $scope.djs[n].experience;
-            }
           }
           console.log($scope.topDJ);
-          $scope.djs[n].latLng = new google.maps.LatLng($scope.djs[n].lat, $scope.djs[n].lng);
           var djMarker = new google.maps.Marker({
               position: $scope.djs[n].latLng,
-              map: $scope.map
+              map: $scope.map,
+              icon: '../img/dj.png'
           });
           var djCircle = new google.maps.Circle({
             map: $scope.map,
