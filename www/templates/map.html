@@ -2,5 +2,16 @@
     <ion-content>
         <div id="map" data-tap-disabled="true"></div>
         <div id="player"></div>
+        <div class="toggle" ng-click="extended = !extended" ng-class="{ 'rotate': extended }">+</div>
+        <div id="current-djs" ng-class="{ 'open': extended }">
+          <div class="inner">
+            <h3>DJs in range</h3>
+            <ul>
+              <li ng-repeat="dj in djsInRange" ng-click="changeStation()">
+                {{dj.name}}
+              </li>
+            </ul>
+          </div>
+        </div>
     </ion-content>
 </ion-view>

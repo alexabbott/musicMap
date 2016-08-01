@@ -21,6 +21,17 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
+.bar.bar-stable {
+  background: $balanced;
+  color: $light;
+  text-align: left;
+
+  .title {
+    color: $light;
+    text-align: left;
+  }
+}
+
 .scroll {
     height: 100%;
 }
@@ -29,7 +40,68 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     height: 100%;
 }
 #player {
+  bottom: 0;
+  height: 100px;
   left: 0;
   position: absolute;
+  width: 100%;
+  z-index: 1;
+}
+#current-djs {
+  background: $light;
+  height: 100%;
+  right: -90vw;
+  position: absolute;
+  text-align: center;
   top: 0;
+  transition: right 0.2s ease-out;
+  width: 90vw;
+  z-index: 1;
+
+  &.open {
+    right: 0;
+  }
+
+  .inner {
+    height: 100%;
+    position: relative;
+    width: 100%;
+
+    h3 {
+      margin: 25px 0;
+    }
+
+    li {
+      background: $balanced;
+      color: $light;
+      cursor: pointer;
+      margin-bottom: 3px;
+      padding: 6px 0;
+      transition: background 0.2s ease-out;
+
+      &:hover {
+        background: darken($balanced, 10%);
+      }
+    }
+  }
+}
+.toggle {
+  background: $balanced;
+  border-radius: 50%;
+  color: $light;
+  cursor: pointer;
+  font-size: 28px;
+  height: 50px;
+  line-height: 34px;
+  position: absolute;
+  right: 20px;
+  text-align: center;
+  top: 20px;
+  transition: transform 0.2s ease-out;
+  width: 50px;
+  z-index: 2;
+
+  &.rotate {
+    transform: rotate(225deg);
+  }
 }

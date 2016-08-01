@@ -44,6 +44,7 @@ angular.module('starter', ['ionic', 'ngCordova'])
       var mapOptions = {
         center: $scope.latLng,
         zoom: 15,
+        mapTypeControl: false,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
 
@@ -59,17 +60,17 @@ angular.module('starter', ['ionic', 'ngCordova'])
           position: $scope.user.latLng,
           map: $scope.map
       });
-      $scope.circle = new google.maps.Circle({
-        map: $scope.map,
-        radius: $scope.user.radius,
-        fillColor: '#AA0000'
-      });
-      $scope.circle.bindTo('center', $scope.marker, 'position');
+      // $scope.circle = new google.maps.Circle({
+      //   map: $scope.map,
+      //   radius: $scope.user.radius,
+      //   fillColor: '#AA0000'
+      // });
+      // $scope.circle.bindTo('center', $scope.marker, 'position');
 
       $scope.djs = [
         {
-          experience: 45,
-          name: 'djank yucca',
+          experience: 15,
+          name: 'djank-yucca',
           lat: 40.750704,
           lng: -73.993752,
           playing: true,
@@ -87,6 +88,7 @@ angular.module('starter', ['ionic', 'ngCordova'])
 
       // dj markers
       $scope.topDJ = 0;
+      $scope.djsInRange = [];
       for (var n = 0; n < $scope.djs.length; n++) {
         $scope.djs[n].radius = 10 * $scope.djs[n].experience;
         $scope.djs[n].latLng = new google.maps.LatLng($scope.djs[n].lat, $scope.djs[n].lng);
@@ -112,19 +114,21 @@ angular.module('starter', ['ionic', 'ngCordova'])
             console.log('in dj range');
             document.getElementById('player').innerHTML = $scope.djs[n].song;
           }
+          if (google.maps.geometry.spherical.computeDistanceBetween($scope.user.latLng, $scope.djs[n].latLng) < $scope.djs[n].radius && $scope.djs[n].playing === true) {
+            $scope.djsInRange.push($scope.djs[n]);
+          }
         }
       }
 
-
-
       setInterval(function() {
+        console.log($scope.djsInRange);
         $cordovaGeolocation.getCurrentPosition(options);
         $scope.user.latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         // console.log('lat: ' + position.coords.latitude + ' | lng: ' + position.coords.longitude);
         // $scope.marker.setPosition({lat: 23.323, lng: -23.344});
         // $scope.map.panTo({lat: 23.323, lng: -23.344});
         $scope.marker.setPosition($scope.user.latLng);
-        $scope.map.panTo($scope.user.latLng);
+        // $scope.map.panTo($scope.user.latLng);
 
         // for (var n = 0; n < $scope.djs.length; n++) {
         //   if (google.maps.geometry.spherical.computeDistanceBetween($scope.user.latLng, $scope.djs[n].latLng) < 483) {
@@ -137,4 +141,14 @@ angular.module('starter', ['ionic', 'ngCordova'])
     }, function(error){
       console.log("Could not get location");
     });
+
+  $scope.changeStation = function() {
+    console.log(this.dj.name);
+    var thisName = this.dj.name;
+    var result = $scope.djsInRange.filter(function( obj ) {
+      return obj.name == thisName;
+    });
+    console.log(result);
+    document.getElementById('player').innerHTML = result[0].song;
+  };
 });
