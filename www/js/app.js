@@ -55,7 +55,33 @@ angular.module('starter', ['ionic', 'ngCordova'])
         }
     };
 
+    var infowindow = new google.maps.InfoWindow();
+    function createMarker(latlng, radius, html){
+      var djMarker = new google.maps.Marker({
+          position: latlng,
+          map: $scope.map,
+          icon: '../img/dj.png'
+      });
+      var djCircle = new google.maps.Circle({
+        map: $scope.map,
+        radius: radius,
+        fillColor: '#00ff00'
+      });
+
+      google.maps.event.addListener(djMarker, 'click', function() {
+        infowindow.setContent(html);
+        infowindow.open($scope.map, djMarker);
+      });
+
+      google.maps.event.addListener($scope.map, 'click', function() {
+        infowindow.close();
+      });
+
+      djCircle.bindTo('center', djMarker, 'position');
+    }
+
     var options = {timeout: 10000, enableHighAccuracy: true};
+
     $cordovaGeolocation.getCurrentPosition(options).then(function(position){
 
       var mapOptions = {
@@ -126,17 +152,7 @@ angular.module('starter', ['ionic', 'ngCordova'])
             $scope.topDJ = $scope.djs[n].experience;
           }
           console.log($scope.topDJ);
-          var djMarker = new google.maps.Marker({
-              position: $scope.djs[n].latLng,
-              map: $scope.map,
-              icon: '../img/dj.png'
-          });
-          var djCircle = new google.maps.Circle({
-            map: $scope.map,
-            radius: $scope.djs[n].radius,
-            fillColor: '#00ff00'
-          });
-          djCircle.bindTo('center', djMarker, 'position');
+          createMarker($scope.djs[n].latLng, $scope.djs[n].radius, $scope.djs[n].name);
           if (google.maps.geometry.spherical.computeDistanceBetween($scope.user.latLng, $scope.djs[n].latLng) < $scope.djs[n].radius && $scope.djs[n].playing === true && $scope.djs[n].experience >= $scope.topDJ) {
             document.getElementById('player').innerHTML = $scope.djs[n].song;
             $scope.playing = $scope.djs[n];
