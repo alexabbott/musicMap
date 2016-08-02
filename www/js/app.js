@@ -37,8 +37,25 @@ angular.module('starter', ['ionic', 'ngCordova'])
 })
 
 .controller('MapCtrl', function($scope, $state, $cordovaGeolocation) {
-  var options = {timeout: 10000, enableHighAccuracy: true};
 
+    // check if an element exists in array using a comparer function
+    // comparer : function(currentElement)
+    Array.prototype.inArray = function(comparer) {
+        for(var i=0; i < this.length; i++) {
+            if(comparer(this[i])) return true;
+        }
+        return false;
+    };
+
+    // adds an element to the array if it does not already exist using a comparer
+    // function
+    Array.prototype.pushIfNotExist = function(element, comparer) {
+        if (!this.inArray(comparer)) {
+            this.push(element);
+        }
+    };
+
+    var options = {timeout: 10000, enableHighAccuracy: true};
     $cordovaGeolocation.getCurrentPosition(options).then(function(position){
 
       var mapOptions = {
@@ -125,19 +142,10 @@ angular.module('starter', ['ionic', 'ngCordova'])
             $scope.playing = $scope.djs[n];
           }
           if (google.maps.geometry.spherical.computeDistanceBetween($scope.user.latLng, $scope.djs[n].latLng) < $scope.djs[n].radius && $scope.djs[n].playing === true) {
-            checkAndAdd($scope.djs[n].name);
+            $scope.djsInRange.pushIfNotExist($scope.djs[n], function(e) {
+                return e.name === $scope.djs[n].name;
+            });
           }
-        }
-      }
-
-      function checkAndAdd(djname) {
-        if ($scope.djsInRange) {
-          var id = $scope.djsInRange.length + 1;
-          var found = $scope.djsInRange.some(function (el) {
-            console.log(el.name);
-            return el.name === djname;
-          });
-          if (!found) { $scope.djsInRange.push($scope.djs[n]); }
         }
       }
 
@@ -156,16 +164,17 @@ angular.module('starter', ['ionic', 'ngCordova'])
         // $scope.marker.setPosition($scope.user.latLng);
         // $scope.map.panTo($scope.user.latLng);
 
-        // if ($scope.djsInRange.length > 0 && $scope.playing.name !== $scope.djsInRange[$scope.djsInRange.length - 1].name) {
-        //   $scope.djsInRange.push($scope.djs[n]);
-        // }
-
-
-
         for (var n = 0; n < $scope.djs.length; n++) {
           if (google.maps.geometry.spherical.computeDistanceBetween($scope.user.latLng, $scope.djs[n].latLng) < $scope.djs[n].radius && $scope.djs[n].playing === true) {
+            $scope.djsInRange.pushIfNotExist($scope.djs[n], function(e) {
+                return e.name === $scope.djs[n].name;
+            });
           } else if (google.maps.geometry.spherical.computeDistanceBetween($scope.user.latLng, $scope.djs[n].latLng) > $scope.djs[n].radius && $scope.djs[n].playing === true) {
             console.log('outside', $scope.djs[n].name);
+            var result = $scope.djsInRange.filter(function(obj) {
+              return obj.name !== $scope.djs[n].name
+            });
+            $scope.djsInRange = result;
           }
         }
       }, 2000);
