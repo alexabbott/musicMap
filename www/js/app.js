@@ -64,27 +64,27 @@ angular.module('starter', ['ionic', 'ngCordova'])
         anchor: new google.maps.Point(12, 13),
         scaledSize: new google.maps.Size(25, 25)
       };
-      var djMarker = new google.maps.Marker({
+      var stationMarker = new google.maps.Marker({
           position: latlng,
           map: $scope.map,
           icon: image
       });
-      var djCircle = new google.maps.Circle({
+      var stationCircle = new google.maps.Circle({
         map: $scope.map,
         radius: radius,
-        fillColor: '#00ff00'
+        fillColor: '#33cd5f'
       });
 
-      google.maps.event.addListener(djMarker, 'click', function() {
+      google.maps.event.addListener(stationMarker, 'click', function() {
         infowindow.setContent(html);
-        infowindow.open($scope.map, djMarker);
+        infowindow.open($scope.map, stationMarker);
       });
 
       google.maps.event.addListener($scope.map, 'click', function() {
         infowindow.close();
       });
 
-      djCircle.bindTo('center', djMarker, 'position');
+      stationCircle.bindTo('center', stationMarker, 'position');
     }
 
     var options = {timeout: 10000, enableHighAccuracy: true};
@@ -123,7 +123,7 @@ angular.module('starter', ['ionic', 'ngCordova'])
       // });
       // $scope.circle.bindTo('center', $scope.marker, 'position');
 
-      $scope.djs = [
+      $scope.stations = [
         {
           experience: 45,
           name: 'djank yucca',
@@ -155,25 +155,25 @@ angular.module('starter', ['ionic', 'ngCordova'])
 
       $scope.playing = {};
 
-      // dj markers
-      $scope.topDJ = 0;
-      $scope.djsInRange = [];
-      for (var n = 0; n < $scope.djs.length; n++) {
-        $scope.djs[n].radius = 10 * $scope.djs[n].experience;
-        $scope.djs[n].latLng = new google.maps.LatLng($scope.djs[n].lat, $scope.djs[n].lng);
+      // station markers
+      $scope.topStation = 0;
+      $scope.stationsInRange = [];
+      for (var n = 0; n < $scope.stations.length; n++) {
+        $scope.stations[n].radius = 10 * $scope.stations[n].experience;
+        $scope.stations[n].latLng = new google.maps.LatLng($scope.stations[n].lat, $scope.stations[n].lng);
 
-        if ($scope.djs[n].playing === true) {
-          if ($scope.djs[n].experience >= $scope.topDJ && google.maps.geometry.spherical.computeDistanceBetween($scope.user.latLng, $scope.djs[n].latLng) < $scope.djs[n].radius) {
-            $scope.topDJ = $scope.djs[n].experience;
+        if ($scope.stations[n].playing === true) {
+          if ($scope.stations[n].experience >= $scope.topStation && google.maps.geometry.spherical.computeDistanceBetween($scope.user.latLng, $scope.stations[n].latLng) < $scope.stations[n].radius) {
+            $scope.topStation = $scope.stations[n].experience;
           }
-          createMarker($scope.djs[n].latLng, $scope.djs[n].radius, $scope.djs[n].name);
-          if (google.maps.geometry.spherical.computeDistanceBetween($scope.user.latLng, $scope.djs[n].latLng) < $scope.djs[n].radius && $scope.djs[n].playing === true && $scope.djs[n].experience >= $scope.topDJ) {
-            document.getElementById('player').innerHTML = $scope.djs[n].song;
-            $scope.playing = $scope.djs[n];
+          createMarker($scope.stations[n].latLng, $scope.stations[n].radius, $scope.stations[n].name);
+          if (google.maps.geometry.spherical.computeDistanceBetween($scope.user.latLng, $scope.stations[n].latLng) < $scope.stations[n].radius && $scope.stations[n].playing === true && $scope.stations[n].experience >= $scope.topStation) {
+            document.getElementById('player').innerHTML = $scope.stations[n].song;
+            $scope.playing = $scope.stations[n];
           }
-          if (google.maps.geometry.spherical.computeDistanceBetween($scope.user.latLng, $scope.djs[n].latLng) < $scope.djs[n].radius && $scope.djs[n].playing === true) {
-            $scope.djsInRange.pushIfNotExist($scope.djs[n], function(e) {
-                return e.name === $scope.djs[n].name;
+          if (google.maps.geometry.spherical.computeDistanceBetween($scope.user.latLng, $scope.stations[n].latLng) < $scope.stations[n].radius && $scope.stations[n].playing === true) {
+            $scope.stationsInRange.pushIfNotExist($scope.stations[n], function(e) {
+                return e.name === $scope.stations[n].name;
             });
           }
         }
@@ -191,16 +191,16 @@ angular.module('starter', ['ionic', 'ngCordova'])
         // $scope.marker.setPosition($scope.user.latLng);
         // $scope.map.panTo($scope.user.latLng);
 
-        for (var n = 0; n < $scope.djs.length; n++) {
-          if (google.maps.geometry.spherical.computeDistanceBetween($scope.user.latLng, $scope.djs[n].latLng) < $scope.djs[n].radius && $scope.djs[n].playing === true) {
-            $scope.djsInRange.pushIfNotExist($scope.djs[n], function(e) {
-                return e.name === $scope.djs[n].name;
+        for (var n = 0; n < $scope.stations.length; n++) {
+          if (google.maps.geometry.spherical.computeDistanceBetween($scope.user.latLng, $scope.stations[n].latLng) < $scope.stations[n].radius && $scope.stations[n].playing === true) {
+            $scope.stationsInRange.pushIfNotExist($scope.stations[n], function(e) {
+                return e.name === $scope.stations[n].name;
             });
-          } else if (google.maps.geometry.spherical.computeDistanceBetween($scope.user.latLng, $scope.djs[n].latLng) > $scope.djs[n].radius && $scope.djs[n].playing === true) {
-            var result = $scope.djsInRange.filter(function(obj) {
-              return obj.name !== $scope.djs[n].name
+          } else if (google.maps.geometry.spherical.computeDistanceBetween($scope.user.latLng, $scope.stations[n].latLng) > $scope.stations[n].radius && $scope.stations[n].playing === true) {
+            var result = $scope.stationsInRange.filter(function(obj) {
+              return obj.name !== $scope.stations[n].name
             });
-            $scope.djsInRange = result;
+            $scope.stationsInRange = result;
           }
         }
       }, 2000);
@@ -209,11 +209,11 @@ angular.module('starter', ['ionic', 'ngCordova'])
     });
 
   $scope.changeStation = function() {
-    var thisName = this.dj.name;
-    var result = $scope.djsInRange.filter(function( obj ) {
+    var thisName = this.station.name;
+    var result = $scope.stationsInRange.filter(function( obj ) {
       return obj.name == thisName;
     });
-    $scope.playing = this.dj;
+    $scope.playing = this.station;
     document.getElementById('player').innerHTML = result[0].song;
   };
 });

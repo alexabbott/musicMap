@@ -9817,6 +9817,7 @@ a.button {
 
 .bar.bar-stable {
   background: #33cd5f;
+  box-shadow: 0 0 11px 3px rgba(0, 0, 0, 0.3);
   color: #fff;
   text-align: left; }
   .bar.bar-stable .title {
@@ -9838,8 +9839,9 @@ a.button {
   width: 100%;
   z-index: 2; }
 
-#current-djs {
+#current-stations {
   background: #fff;
+  box-shadow: 0 0 11px 3px rgba(0, 0, 0, 0.1);
   height: 100%;
   right: -90vw;
   position: absolute;
@@ -9848,15 +9850,15 @@ a.button {
   transition: right 0.2s ease-out;
   width: 90vw;
   z-index: 1; }
-  #current-djs.open {
+  #current-stations.open {
     right: 0; }
-  #current-djs .inner {
+  #current-stations .inner {
     height: 100%;
     position: relative;
     width: 100%; }
-    #current-djs .inner h3 {
+    #current-stations .inner h3 {
       margin: 25px 0; }
-    #current-djs .inner li {
+    #current-stations .inner li {
       background: #33cd5f;
       color: #fff;
       cursor: pointer;
@@ -9864,20 +9866,20 @@ a.button {
       padding: 6px 0;
       position: relative;
       transition: background 0.2s ease-out; }
-      #current-djs .inner li:hover {
+      #current-stations .inner li:hover {
         background: #28a54c; }
-      #current-djs .inner li .now-playing {
+      #current-stations .inner li .now-playing {
         font-weight: bold;
         position: absolute;
         right: 20px; }
-    #current-djs .inner .form-container .create-station {
+    #current-stations .inner .form-container .create-station {
       background: none;
       color: #000;
       cursor: pointer;
       font-size: 20px;
       margin: 30px;
       text-align: center; }
-      #current-djs .inner .form-container .create-station.bottom {
+      #current-stations .inner .form-container .create-station.bottom {
         background: #33cd5f;
         bottom: 150px;
         color: #fff;
@@ -9888,13 +9890,13 @@ a.button {
         position: absolute;
         transform: translateX(-50%);
         width: 200px; }
-    #current-djs .inner .form-container input {
+    #current-stations .inner .form-container input {
       border: 1px solid #ddd;
       box-sizing: border-box;
       margin: 0 0 10px 5%;
       padding: 0 5px;
       width: 90%; }
-    #current-djs .inner .form-container #submit-form {
+    #current-stations .inner .form-container #submit-form {
       background: #33cd5f;
       color: #fff;
       cursor: pointer;
@@ -9907,6 +9909,7 @@ a.button {
 .toggle {
   background: #33cd5f;
   border-radius: 50%;
+  box-shadow: 0 0 11px 3px rgba(0, 0, 0, 0.1);
   color: #fff;
   cursor: pointer;
   font-size: 28px;
