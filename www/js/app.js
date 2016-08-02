@@ -58,7 +58,8 @@ angular.module('starter', ['ionic', 'ngCordova'])
       // user marker
       $scope.marker = new google.maps.Marker({
           position: $scope.user.latLng,
-          map: $scope.map
+          map: $scope.map,
+          draggable: true
       });
       // $scope.circle = new google.maps.Circle({
       //   map: $scope.map,
@@ -69,12 +70,12 @@ angular.module('starter', ['ionic', 'ngCordova'])
 
       $scope.djs = [
         {
-          experience: 15,
-          name: 'djank-yucca',
-          lat: 40.750704,
-          lng: -73.993752,
+          experience: 45,
+          name: 'djank yucca',
+          lat: 40.730923,
+          lng: -73.997232,
           playing: true,
-          song: '<iframe width="100%" height="450" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/258838532&amp;auto_play=true&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>'
+          song: '<iframe width="100%" height="450" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/218081688&amp;auto_play=true&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>'
         },
         {
           experience: 10,
@@ -82,9 +83,19 @@ angular.module('starter', ['ionic', 'ngCordova'])
           lat: 40.748028,
           lng: -73.995755,
           playing: true,
-          song: '<iframe width="100%" height="450" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/241628741&amp;auto_play=true&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>'
+          song: '<iframe width="100%" height="450" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/184815214&amp;auto_play=true&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>'
+        },
+        {
+          experience: 30,
+          name: '3lo',
+          lat: 40.730823,
+          lng: -73.997332,
+          playing: true,
+          song: '<iframe width="100%" height="450" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/219432939&amp;auto_play=true&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>'
         }
       ];
+
+      $scope.playing = {};
 
       // dj markers
       $scope.topDJ = 0;
@@ -109,34 +120,54 @@ angular.module('starter', ['ionic', 'ngCordova'])
             fillColor: '#00ff00'
           });
           djCircle.bindTo('center', djMarker, 'position');
-          console.log($scope.djs[n].name + ' : ' + google.maps.geometry.spherical.computeDistanceBetween($scope.user.latLng, $scope.djs[n].latLng));
           if (google.maps.geometry.spherical.computeDistanceBetween($scope.user.latLng, $scope.djs[n].latLng) < $scope.djs[n].radius && $scope.djs[n].playing === true && $scope.djs[n].experience >= $scope.topDJ) {
-            console.log('in dj range');
             document.getElementById('player').innerHTML = $scope.djs[n].song;
+            $scope.playing = $scope.djs[n];
           }
           if (google.maps.geometry.spherical.computeDistanceBetween($scope.user.latLng, $scope.djs[n].latLng) < $scope.djs[n].radius && $scope.djs[n].playing === true) {
-            $scope.djsInRange.push($scope.djs[n]);
+            checkAndAdd($scope.djs[n].name);
           }
         }
       }
 
+      function checkAndAdd(djname) {
+        if ($scope.djsInRange) {
+          var id = $scope.djsInRange.length + 1;
+          var found = $scope.djsInRange.some(function (el) {
+            console.log(el.name);
+            return el.name === djname;
+          });
+          if (!found) { $scope.djsInRange.push($scope.djs[n]); }
+        }
+      }
+
+      $scope.map.panTo($scope.user.latLng);
+
       setInterval(function() {
-        console.log($scope.djsInRange);
-        $cordovaGeolocation.getCurrentPosition(options);
-        $scope.user.latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        console.log('range', $scope.djsInRange);
+        console.log('user', $scope.user.latLng);
+        console.log('marker', $scope.marker);
+        $scope.user.latLng = $scope.marker.position;
+        // $cordovaGeolocation.getCurrentPosition(options);
+        // $scope.user.latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         // console.log('lat: ' + position.coords.latitude + ' | lng: ' + position.coords.longitude);
         // $scope.marker.setPosition({lat: 23.323, lng: -23.344});
         // $scope.map.panTo({lat: 23.323, lng: -23.344});
-        $scope.marker.setPosition($scope.user.latLng);
+        // $scope.marker.setPosition($scope.user.latLng);
         // $scope.map.panTo($scope.user.latLng);
 
-        // for (var n = 0; n < $scope.djs.length; n++) {
-        //   if (google.maps.geometry.spherical.computeDistanceBetween($scope.user.latLng, $scope.djs[n].latLng) < 483) {
-        //     console.log('in dj range');
-        //   } else {
-        //     document.getElementById('player').innerHTML = '';
-        //   }
+        // if ($scope.djsInRange.length > 0 && $scope.playing.name !== $scope.djsInRange[$scope.djsInRange.length - 1].name) {
+        //   $scope.djsInRange.push($scope.djs[n]);
         // }
+
+
+
+        for (var n = 0; n < $scope.djs.length; n++) {
+          if (google.maps.geometry.spherical.computeDistanceBetween($scope.user.latLng, $scope.djs[n].latLng) < $scope.djs[n].radius && $scope.djs[n].playing === true) {
+          } else if (google.maps.geometry.spherical.computeDistanceBetween($scope.user.latLng, $scope.djs[n].latLng) > $scope.djs[n].radius && $scope.djs[n].playing === true) {
+            console.log('outside', $scope.djs[n].name);
+          }
+        }
       }, 2000);
     }, function(error){
       console.log("Could not get location");
@@ -148,7 +179,7 @@ angular.module('starter', ['ionic', 'ngCordova'])
     var result = $scope.djsInRange.filter(function( obj ) {
       return obj.name == thisName;
     });
-    console.log(result);
+    $scope.playing = this.dj;
     document.getElementById('player').innerHTML = result[0].song;
   };
 });
