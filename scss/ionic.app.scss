@@ -77,10 +77,17 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
       cursor: pointer;
       margin-bottom: 3px;
       padding: 6px 0;
+      position: relative;
       transition: background 0.2s ease-out;
 
       &:hover {
         background: darken($balanced, 10%);
+      }
+
+      .now-playing {
+        font-weight: bold;
+        position: absolute;
+        right: 20px;
       }
     }
   }

@@ -118,6 +118,7 @@ angular.module('starter', ['ionic', 'ngCordova'])
           lat: 40.730923,
           lng: -73.997232,
           playing: true,
+          vibes: 'jungle',
           song: '<iframe width="100%" height="450" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/218081688&amp;auto_play=true&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>'
         },
         {
@@ -126,6 +127,7 @@ angular.module('starter', ['ionic', 'ngCordova'])
           lat: 40.748028,
           lng: -73.995755,
           playing: true,
+          vibes: 'chill',
           song: '<iframe width="100%" height="450" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/184815214&amp;auto_play=true&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>'
         },
         {
@@ -134,6 +136,7 @@ angular.module('starter', ['ionic', 'ngCordova'])
           lat: 40.730823,
           lng: -73.997332,
           playing: true,
+          vibes: 'hip hop',
           song: '<iframe width="100%" height="450" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/219432939&amp;auto_play=true&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>'
         }
       ];

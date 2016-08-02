@@ -8,7 +8,7 @@
             <h3>DJs in range</h3>
             <ul>
               <li ng-repeat="dj in djsInRange" ng-click="changeStation()">
-                {{dj.name}} <span ng-if="dj.name == playing.name">*</span>
+                {{dj.name}} ({{dj.vibes}}) <span ng-if="dj.name == playing.name" class="now-playing">now playing</span>
               </li>
             </ul>
           </div>

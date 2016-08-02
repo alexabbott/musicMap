@@ -9862,9 +9862,14 @@ a.button {
       cursor: pointer;
       margin-bottom: 3px;
       padding: 6px 0;
+      position: relative;
       transition: background 0.2s ease-out; }
       #current-djs .inner li:hover {
         background: #28a54c; }
+      #current-djs .inner li .now-playing {
+        font-weight: bold;
+        position: absolute;
+        right: 20px; }
 
 .toggle {
   background: #33cd5f;
