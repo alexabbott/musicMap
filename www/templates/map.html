@@ -2,7 +2,7 @@
     <ion-content>
         <div id="map" data-tap-disabled="true"></div>
         <div id="player"></div>
-        <div class="toggle" ng-click="extended = !extended; openForm = false;" ng-class="{ 'rotate': extended }">+</div>
+        <div class="toggle" ng-click="extended = !extended; openForm = false; hideForm = false;" ng-class="{ 'rotate': extended }">+</div>
         <div id="current-stations" ng-class="{ 'open': extended }">
           <div class="inner">
             <div class="in-range" ng-hide="openForm === true">
@@ -14,13 +14,23 @@
               </ul>
             </div>
             <div class="form-container">
-              <div ng-click="openForm = !openForm" class="create-station" ng-class="{ 'bottom': openForm !== true}">Create a station</div>
-              <form ng-show="openForm === true">
-                <input type="text" placeholder="Name your station">
-                <input type="text" placeholder="What's your station's vibes?">
-                <input type="text" placeholder="Enter a Soundcloud playlist or song URL">
-                <div id="submit-form">Submit</div>
+              <div ng-click="openForm = !openForm" class="create-station" ng-class="{ 'bottom': openForm !== true}">
+                Create a station
+              </div>
+              <form method="POST" target="fake-target" action="https://docs.google.com/forms/d/e/1FAIpQLSfEjSFMSY1aWZ6h7nubmkA2C2c22EpwBpkrw8bO7XwjvNnHFw/formResponse" onsubmit="return true;" ng-show="openForm === true">
+                <input type="text" name="entry.1446070100" id="input-name"placeholder="Name your station">
+                <input type="text" name="entry.1835854813" id="input-vibes"placeholder="What's your station's vibes?">
+                <input type="text" name="entry.1037509933" id="input-stream"placeholder="Enter a Soundcloud playlist or song URL">
+                <input type="hidden" name="entry.145684768" id="input-lat">
+                <input type="hidden" name="entry.683264749" id="input-lng">
+                <input type="hidden" name="entry.40156515" id="input-icon" value="../img/dj.png">
+                <input type="hidden" name="entry.799226144" id="input-color" value="#ffcc00">
+                <input type="hidden" name="entry.1368764535" id="input-playing" value="TRUE">
+                <input type="hidden" name="entry.2099057787" id="input-featured" value="FALSE">
+                <input type="hidden" name="entry.1016389847" id="input-experience" value="15">
+                <input type="submit" value="Submit" id="submit-form" ng-click="showThanks()">
               </form>
+              <iframe src="" id="fake-target" name="fake-target" style="width:0px; height:0px; border:0px;"></iframe>
             </div>
           </div>
         </div>
